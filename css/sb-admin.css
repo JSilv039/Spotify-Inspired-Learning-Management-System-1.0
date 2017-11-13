@@ -751,6 +751,7 @@ h2                              { color: #0000A0; font: 30px Helvetica, Sans-Ser
 	display: inline-block;
 	padding-bottom: 7px;
 	position: fixed;
+	font-size: 14px;
 }
 
 #myTabContent {
