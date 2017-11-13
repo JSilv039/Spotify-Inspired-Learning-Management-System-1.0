@@ -25,6 +25,72 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+	    <script type="text/javascript">
+    
+        // ask user for name with popup prompt    
+        var name = prompt("Enter your chat name:", "Guest");
+        
+        // default name is 'Guest'
+    	if (!name || name === ' ') {
+    	   name = "Guest";	
+    	}
+    	
+    	// strip tags
+    	name = name.replace(/(<([^>]+)>)/ig,"");
+    	
+    	// display name on page
+    	$("#name-area").html("You are: <span>" + name + "</span>");
+    	
+    	// kick off chat
+        var chat =  new Chat();
+    	$(function() {
+    	
+    		 chat.getState(); 
+    		 
+    		 // watch textarea for key presses
+             $("#sendie").keydown(function(event) {  
+             
+                 var key = event.which;  
+           
+                 //all keys including return.  
+                 if (key >= 33) {
+                   
+                     var maxLength = $(this).attr("maxlength");  
+                     var length = this.value.length;  
+                     
+                     // don't allow new content if length is maxed out
+                     if (length >= maxLength) {  
+                         event.preventDefault();  
+                     }  
+                  }  
+    		 																																																});
+    		 // watch textarea for release of key press
+    		 $('#sendie').keyup(function(e) {	
+    		 					 
+    			  if (e.keyCode == 13) { 
+    			  
+                    var text = $(this).val();
+    				var maxLength = $(this).attr("maxlength");  
+                    var length = text.length; 
+                     
+                    // send 
+                    if (length <= maxLength + 1) { 
+                     
+    			        chat.send(text, name);	
+    			        $(this).val("");
+    			        
+                    } else {
+                    
+    					$(this).val(text.substring(0, maxLength));
+    					
+    				}	
+    				
+    				
+    			  }
+             });
+            
+    	});
+    </script>
 </head>
 
 <body>
@@ -175,7 +241,7 @@
 <!--Start of Todo List section************************************************************************************************************ -->
   <div class="row">
     <div class="col-lg-12">
-      <ul class="nav nav-tabs">
+      <ul id="messageNavBar" class="nav nav-tabs">
         <li class="active"><a href="#week" data-toggle="tab" aria-expanded="true">Notifications</a></li>
         <li class=""><a href="#month" data-toggle="tab" aria-expanded="false">Inbox</a></li>   <!--Possibly consider changing values of a --->
 
@@ -192,12 +258,20 @@
     </div>
   </div>
 
-  <div class="main">
-    <h6>Messages will go in here</h6>
-  </div>
-  <div class="submit">
-    <button type="submit" class="btn btn-default"<a href="searchResults.html">Submit</a></button>
-		<i class="fa fa-paper-plane" aria-hidden="true"></i>
+ <div id="page-wrap">
+    
+        <h2>ScratchBoard Chat</h2>
+        
+        <p id="name-area"></p>
+        
+        <div id="chat-wrap"><div id="chat-area"></div></div>
+        
+        <form id="send-message-area">
+            <p>Your message: </p>
+            <textarea id="sendie" maxlength = '100' ></textarea>
+        </form>
+    
+    </div>
 <!--<input id="submit" type="submit" value="Message"></input>-->
   </div>
     <!-- jQuery -->
